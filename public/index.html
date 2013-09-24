@@ -47,7 +47,7 @@
 
       var block = blocks[Math.floor(Math.random()*blocks.length)];
       var posx = 0, posy = 0;
-      var map, mapWidth = 10, mapHeight = 20;
+      var map, mapWidth = 10, mapHeight = 22;
 
       function load() {
         var elmTarget = document.getElementById('target');
@@ -121,8 +121,10 @@
       }
 
       function paint(){
-        ctx.clearRect(0, 0, 200, 400);
-        paintMatrix(block, posx, posy, 'rgb(255,0,0)');
+        ctx.clearRect(0, 0, 200, 440);
+        if(posy > 2){
+          paintMatrix(block, posx,posy,'rgb(255, 0, 0)');
+        }
         paintMatrix(map, 0, 0,'rgb(128,128,128)');
 
         if (check(map, block, posx, posy + 1)) {
@@ -131,6 +133,19 @@
         else {
           mergeMatrix(map, block, posx, posy);
           clearRows(map);
+          if(posy < 2){
+            alert("GameOver");
+            ctx.clearRect(0,0, 200, 440);
+            posx = 0;  posy = 0;
+            map = [];
+            for (var y = 0; y < mapHeight; y++){
+              map[y] = [];
+              for (var x = 0; x < mapWidth; x++){
+                map[y][x] = 0;
+              }
+            }
+          }
+
           posx = 0; posy = 0;
           block = blocks[Math.floor(Math.random() * blocks.length)];
         }
@@ -186,6 +201,6 @@
 
   <body onload="load()" onkeydown="key(event.keyCode)">
     <h1>My Tetris</h1>
-    <canvas id="target" style="border: 5px solid blue" width="200px" height="400px"></canvas>
+    <canvas id="target" style="border: 5px solid blue" width="200px" height="440px"></canvas>
   </body>
 </html>
